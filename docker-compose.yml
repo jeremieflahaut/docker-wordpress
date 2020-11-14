@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  wordpress:
+    container_name: ${COMPOSE_PROJECT_NAME}_wordpress
+    build: 
+      context: ./.docker/wordpress
+    volumes: 
+      - ./wordpress:/var/www/html
+      - ./.docker/wordpress/uploads.ini:/usr/local/etc/php/conf.d/uploads.ini
+    ports:
+      - "82:80"
+    networks:
+      - antibes
+      - mysql
+    restart: always
+    environment:
+      WORDPRESS_DB_HOST: mysql_mysql
+      WORDPRESS_DB_USER: fleur
+      WORDPRESS_DB_PASSWORD: garfield
+      WORDPRESS_DB_NAME: chalet
+
+networks:
+  antibes:
+    external: true
+    name: antibes
+  mysql:
+    external: true
+    name: mysql_default
